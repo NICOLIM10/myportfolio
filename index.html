@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Francisco E. Nicolai Lim | IT Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+ 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            color: #333;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+ 
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+ 
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); }
+        }
+ 
+        a {
+            text-decoration: none;
+            color: #3b82f6;
+            transition: all 0.3s ease;
+        }
+ 
+        a:hover {
+            color: #60a5fa;
+            transform: translateY(-2px);
+        }
+ 
+        /* Header & Navigation */
+        header {
+            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+            color: #fff;
+            padding: 50px 10%;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(30, 64, 175, 0.4);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+ 
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            animation: pulse 15s ease-in-out infinite;
+        }
+ 
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #60a5fa, #a78bfa, transparent);
+            animation: shimmer 3s linear infinite;
+        }
+ 
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+ 
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+ 
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            animation: slideDown 0.8s ease-out;
+        }
+ 
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+ 
+        header p {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+            opacity: 0.95;
+            animation: slideDown 0.8s ease-out 0.2s backwards;
+        }
+ 
+        nav {
+            margin-top: 25px;
+            position: relative;
+            z-index: 1;
+            animation: slideDown 0.8s ease-out 0.4s backwards;
+        }
+ 
+        nav a {
+            margin: 0 15px;
+            color: #fff;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 30px;
+            display: inline-block;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+ 
+        nav a:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+ 
+        /* Sections */
+        section {
+            padding: 60px 10%;
+            max-width: 1100px;
+            margin: 0 auto;
+            animation: fadeIn 0.8s ease-in;
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            margin-top: 30px;
+            margin-bottom: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+ 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+ 
+        section h2 {
+            font-size: 2.2rem;
+            margin-bottom: 35px;
+            color: #fff;
+            border-bottom: 3px solid #3b82f6;
+            display: inline-block;
+            padding-bottom: 12px;
+            position: relative;
+        }
+ 
+        section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, #a78bfa, #ec4899);
+            animation: expandWidth 1s ease-out;
+        }
+ 
+        @keyframes expandWidth {
+            from { width: 0; }
+            to { width: 50%; }
+        }
+ 
+        section p {
+            color: #e2e8f0;
+            font-size: 1.05rem;
+        }
+ 
+        /* Skills */
+        .skills ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+ 
+        .skills li {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            color: #fff;
+            padding: 14px 24px;
+            border-radius: 30px;
+            font-size: 1rem;
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+ 
+        .skills li::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+ 
+        .skills li:hover::before {
+            left: 100%;
+        }
+ 
+        .skills li:hover {
+            transform: translateY(-8px) scale(1.08);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.6);
+        }
+ 
+        /* Projects */
+        .projects .project {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(51, 65, 85, 0.6) 100%);
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            border-left: 5px solid #3b82f6;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+ 
+        .projects .project:hover {
+            transform: translateX(15px) translateY(-5px);
+            box-shadow: 0 12px 40px rgba(59, 130, 246, 0.4);
+            border-left-color: #a78bfa;
+        }
+ 
+        .projects .project h3 {
+            color: #60a5fa;
+            margin-bottom: 12px;
+            font-size: 1.5rem;
+        }
+ 
+        .projects .project p {
+            color: #cbd5e1;
+            margin-bottom: 12px;
+        }
+ 
+        .projects .project .tech-stack {
+            margin-top: 15px;
+            font-size: 0.95rem;
+            color: #94a3b8;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            border-left: 3px solid #8b5cf6;
+        }
+ 
+        .projects .project .tech-stack strong {
+            color: #a78bfa;
+        }
+ 
+        .projects .project a {
+            color: #60a5fa;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+ 
+        .projects .project a::after {
+            content: '→';
+            transition: transform 0.3s;
+        }
+ 
+        .projects .project a:hover::after {
+            transform: translateX(5px);
+        }
+ 
+        /* Certifications & Activities */
+        .certifications ul,
+        .activities ul {
+            list-style-type: none;
+            padding: 0;
+        }
+ 
+        .certifications li,
+        .activities li {
+            padding: 15px 0;
+            padding-left: 35px;
+            position: relative;
+            color: #cbd5e1;
+            transition: all 0.3s ease;
+        }
+ 
+        .certifications li:hover,
+        .activities li:hover {
+            padding-left: 45px;
+            color: #fff;
+        }
+ 
+        .certifications li::before,
+        .activities li::before {
+            content: '▪';
+            position: absolute;
+            left: 0;
+            color: #3b82f6;
+            font-size: 1.8rem;
+            transition: all 0.3s ease;
+        }
+ 
+        .certifications li:hover::before,
+        .activities li:hover::before {
+            color: #a78bfa;
+            transform: scale(1.2);
+        }
+ 
+        /* Education Section */
+        .education {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(51, 65, 85, 0.7) 100%);
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            transition: all 0.3s ease;
+        }
+ 
+        .education:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(59, 130, 246, 0.4);
+        }
+ 
+        .education h3 {
+            color: #60a5fa;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+ 
+        .education p {
+            color: #cbd5e1;
+            margin: 8px 0;
+        }
+ 
+        .education p strong {
+            color: #a78bfa;
+        }
+ 
+        /* Contact */
+        #contact p {
+            margin: 18px 0;
+            font-size: 1.15rem;
+            color: #cbd5e1;
+        }
+ 
+        #contact p strong {
+            color: #60a5fa;
+        }
+ 
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #fff;
+            text-align: center;
+            padding: 40px 10%;
+            margin-top: 50px;
+            box-shadow: 0 -5px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+ 
+        footer a {
+            color: #93c5fd;
+            margin: 0 15px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+ 
+        footer a:hover {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(147, 197, 253, 0.8);
+        }
+ 
+        footer p {
+            margin: 10px 0;
+            color: #cbd5e1;
+        }
+ 
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.2rem;
+            }
+ 
+            nav a {
+                display: block;
+                margin: 10px 0;
+            }
+ 
+            section {
+                padding: 40px 5%;
+            }
+ 
+            .skills ul {
+                justify-content: center;
+            }
+ 
+            section h2 {
+                font-size: 1.8rem;
+            }
+        }
+ 
+        /* Scroll Animation */
+        section {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+ 
+        section:nth-child(1) { animation-delay: 0.1s; }
+        section:nth-child(2) { animation-delay: 0.2s; }
+        section:nth-child(3) { animation-delay: 0.3s; }
+        section:nth-child(4) { animation-delay: 0.4s; }
+        section:nth-child(5) { animation-delay: 0.5s; }
+        section:nth-child(6) { animation-delay: 0.6s; }
+        section:nth-child(7) { animation-delay: 0.7s; }
+ 
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+ 
+    <!-- Header -->
+    <header>
+        <h1>LIM, FRANCISCO E. NICOLAI</h1>
+        <p>IT Student | Aspiring Web Developer & Web Designer</p>
+        <nav>
+            <a href="#about">About</a>
+            <a href="#education">Education</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#certifications">Certifications</a>
+            <a href="#activities">Experience</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+ 
+    <!-- About Section -->
+    <section id="about">
+        <h2>About Me</h2>
+        <p>
+            I am a dedicated IT student with a strong passion for web development and software engineering. My journey in technology has been driven by curiosity and a desire to create meaningful digital solutions. I specialize in building responsive, user-friendly websites and applications using modern web technologies. With hands-on experience in both front-end and back-end development, I thrive on solving complex problems and continuously expanding my technical skill set.
+        </p>
+        <p style="margin-top: 15px;">
+            Beyond coding, I actively participate in tech communities, contribute to open-source projects, and stay current with industry trends. My goal is to leverage technology to create innovative solutions that make a positive impact. I am particularly interested in full-stack development, cloud computing, and creating scalable web applications that enhance user experiences.
+        </p>
+    </section>
+ 
+    <!-- Education Section -->
+    <section id="education">
+        <h2>Education</h2>
+        <div class="education">
+            <h3>Bachelor of Science in Information Technology</h3>
+            <p><strong>University:</strong> UNIVERSITY OF PERPETUAL HELP SYSTEM DALTA MOLINO</p>
+            <p><strong>Expected Graduation:</strong> 2028</p>
+            <p><strong>Relevant Coursework:</strong> Web Development, Database Management, Software Engineering, Computer Networks, Data Structures and Algorithms, Cloud Computing</p>
+            <p><strong>Academic Achievements:</strong> Dean's List, Academic Scholarship Recipient</p>
+        </div>
+    </section>
+ 
+    <!-- Skills Section -->
+    <section id="skills" class="skills">
+        <h2>Technical Skills</h2>
+        <ul>
+            <li>HTML5</li>
+            <li>CSS3</li>
+            <li>JavaScript</li>
+            <li>Python</li>
+            <li>Git & GitHub</li>
+        </ul>
+    </section>
+ 
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <h2>Featured Projects</h2>
+        <div class="project">
+            <h3>Project 1: Nails by Riz - Professional Nail Salon Website</h3>
+            <p>Designed and developed a stunning, fully responsive website for a premium nail salon business. The site features an elegant design with smooth scrolling, service galleries, online booking integration, and customer testimonials. Implemented SEO best practices and optimized loading speeds for excellent user experience across all devices.</p>
+            <p class="tech-stack"><strong>Technologies:</strong> HTML5, CSS3, JavaScript</p>
+            <p><a href="https://nicolim10.github.io/NAILSBYRIZ/" target="_blank">View Live Site</a></p>
+        </div>
+        <div class="project">
+            <h3>Project 4: Personal Portfolio Website</h3>
+            <p>Designed and developed a fully responsive personal portfolio website showcasing my web design projects and skills. Features smooth animations, interactive project showcases, dark/light mode toggle, and optimized performance for all devices.</p>
+            <p class="tech-stack"><strong>Technologies:</strong> HTML5, CSS3, JavaScript, Responsive Design, Git</p>
+        </div>
+    </section>
+ 
+<!-- Certifications Section -->
+    <section id="certifications" class="certifications">
+        <h2>Certifications & Training</h2>
+        <p style="margin-bottom: 25px; color: #a78bfa; font-weight: 600;">All certifications obtained from TESDA (Technical Education and Skills Development Authority)</p>
+        <ul>
+            <li>UX Design Certification - TESDA</li>
+            <li>Developing Design for User Interface - TESDA</li>
+            <li>Developing Designs for a Logo - TESDA</li>
+            <li>Designs for Product Packaging - TESDA</li>
+            <li>Print Media Design - TESDA</li>
+            <li>Intro to Visual Graphic Design (VGD) - TESDA</li>
+            <li>Introduction to CSS (CEE) - TESDA</li>
+            <li>Microsoft Digital Literacy - TESDA</li>
+            <li>Installing and Configuring Computer Systems - TESDA</li>
+            <li>Maintaining Computer Systems and Networks - TESDA</li>
+            <li>Setting Up Computer Networks - TESDA</li>
+            <li>Setting Up Computer Servers - TESDA</li>
+            <li>WiFi 101 and Digital Footprint - TESDA</li>
+            <li>Smart Technopreneurship 101 - TESDA</li>
+        </ul>
+    </section>
+
+ 
+    <!-- Freelance Experience Section -->
+    <section id="activities" class="activities">
+        <h2>Freelance Experience</h2>
+        <ul>
+            <li>Freelance Web Developer – Designing and developing custom websites for small businesses and startups, delivering responsive, SEO-optimized solutions tailored to client needs</li>
+        </ul>
+    </section>
+ 
+    <!-- Contact Section -->    
+    <section id="contact">
+        <h2>Get In Touch</h2>
+        <p><strong>Email:</strong> <a href="francisco.nicolai.lim@gmail.com">francisco.nicolai.lim@gmail.com</a></p>
+        <p><strong>Facebook:</strong> <a href="https://facebook.com/franciscolim" target="_blank">Francisco Lim</a></p>
+        <p><strong>GitHub:</strong> <a href="https://github.com/NICOLIM10" target="_blank">github.com/NICOLIM10</a></p>
+        <p><strong>Location:</strong> Bacoor City, CALABARZON, Philippines</p>
+    </section>
+ 
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Francisco E. Nicolai Lim | All Rights Reserved</p>
+        <p>
+            <a href="https://github.com/NICOLIM10" target="_blank">GitHub</a> |
+            <a href="mailto:francisco.nicolai.lim@gmail.com">Email</a>
+        </p>
+    </footer>
+ 
+</body>
+</html>
