@@ -8,27 +8,59 @@
         body {
             margin: 0;
             overflow: hidden;
-            background: #000;
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
         }
         canvas {
             display: block;
         }
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
     </style>
 </head>
 <body>
+    <div class="stars" id="stars"></div>
     <canvas id="canvas"></canvas>
     <script>
+        // Create starfield
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+ 
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
-        
+ 
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        
+ 
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         });
-        
+ 
         class Particle {
             constructor(x, y, color) {
                 this.x = x;
@@ -43,17 +75,23 @@
                 this.gravity = 0.05;
                 this.size = Math.random() * 3 + 1;
             }
-            
+ 
             update() {
                 this.velocity.y += this.gravity;
                 this.x += this.velocity.x;
                 this.y += this.velocity.y;
                 this.alpha -= this.decay;
+                this.velocity.x *= 0.99; // Air resistance
             }
-            
+ 
             draw() {
                 ctx.save();
                 ctx.globalAlpha = this.alpha;
+ 
+                // Add glow effect
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = this.color;
+ 
                 ctx.fillStyle = this.color;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
@@ -61,7 +99,7 @@
                 ctx.restore();
             }
         }
-        
+ 
         class Firework {
             constructor() {
                 this.x = Math.random() * canvas.width;
@@ -70,14 +108,20 @@
                 this.velocity = (this.y - this.targetY) / 60;
                 this.particles = [];
                 this.exploded = false;
-                this.color = `hsl(${Math.random() * 360}, 100%, 60%)`;
+ 
+                // More vibrant colors with varied saturation
+                const hue = Math.random() * 360;
+                this.color = `hsl(${hue}, 100%, 60%)`;
+                this.secondaryColor = `hsl(${(hue + 30) % 360}, 100%, 70%)`;
+ 
                 this.trailParticles = [];
+                this.type = Math.random() < 0.7 ? 'burst' : 'ring';
             }
-            
+ 
             update() {
                 if (!this.exploded) {
                     this.y -= this.velocity;
-                    
+ 
                     // Add trail
                     if (Math.random() < 0.3) {
                         this.trailParticles.push({
@@ -87,7 +131,7 @@
                             size: 2
                         });
                     }
-                    
+ 
                     if (this.y <= this.targetY) {
                         this.explode();
                     }
@@ -99,7 +143,7 @@
                         }
                     });
                 }
-                
+ 
                 // Update trail
                 this.trailParticles.forEach((t, i) => {
                     t.alpha -= 0.02;
@@ -108,16 +152,31 @@
                     }
                 });
             }
-            
+ 
             explode() {
                 this.exploded = true;
                 const particleCount = Math.random() * 50 + 100;
-                
-                for (let i = 0; i < particleCount; i++) {
-                    this.particles.push(new Particle(this.x, this.y, this.color));
+ 
+                if (this.type === 'ring') {
+                    // Ring explosion
+                    for (let i = 0; i < particleCount; i++) {
+                        const angle = (Math.PI * 2 * i) / particleCount;
+                        const particle = new Particle(this.x, this.y, 
+                            Math.random() < 0.5 ? this.color : this.secondaryColor);
+                        const speed = Math.random() * 2 + 4;
+                        particle.velocity.x = Math.cos(angle) * speed;
+                        particle.velocity.y = Math.sin(angle) * speed;
+                        this.particles.push(particle);
+                    }
+                } else {
+                    // Regular burst
+                    for (let i = 0; i < particleCount; i++) {
+                        this.particles.push(new Particle(this.x, this.y, 
+                            Math.random() < 0.3 ? this.secondaryColor : this.color));
+                    }
                 }
             }
-            
+ 
             draw() {
                 if (!this.exploded) {
                     // Draw trail
@@ -130,7 +189,7 @@
                         ctx.fill();
                         ctx.restore();
                     });
-                    
+ 
                     // Draw rocket
                     ctx.fillStyle = this.color;
                     ctx.beginPath();
@@ -140,38 +199,38 @@
                     this.particles.forEach(p => p.draw());
                 }
             }
-            
+ 
             isDone() {
                 return this.exploded && this.particles.length === 0;
             }
         }
-        
+ 
         const fireworks = [];
         let lastFireworkTime = 0;
-        
+ 
         function animate(currentTime) {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
+ 
             // Launch new fireworks
             if (currentTime - lastFireworkTime > Math.random() * 500 + 500) {
                 fireworks.push(new Firework());
                 lastFireworkTime = currentTime;
             }
-            
+ 
             // Update and draw fireworks
             fireworks.forEach((fw, i) => {
                 fw.update();
                 fw.draw();
-                
+ 
                 if (fw.isDone()) {
                     fireworks.splice(i, 1);
                 }
             });
-            
+ 
             requestAnimationFrame(animate);
         }
-        
+ 
         animate(0);
     </script>
 </body>
